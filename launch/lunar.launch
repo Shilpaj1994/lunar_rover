@@ -1,0 +1,7 @@
+<launch> 
+
+	<!-- start node -->
+	<node    pkg="gazebo_ros"    name="lunar_world"    type="gazebo"    args="$(find sim)/world/moon"/>
+   
+</launch>
+
