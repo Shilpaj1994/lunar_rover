@@ -19,5 +19,5 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-      	cd nodes
+      	export PYTHONPATH=src
         pylint `ls -R|grep .py$|xargs`
