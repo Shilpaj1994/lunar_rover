@@ -52,6 +52,9 @@ class Models:
         """
             Function to Reset the Simulator
         """
+        # TO DO: Add model info to the service type and then execute the service
+        model_details = SpawnModel()
+
         try:
             reset_serv = rospy.ServiceProxy('/lunar_world/spawn_sdf_model', SpawnModel)
             reset_serv()
