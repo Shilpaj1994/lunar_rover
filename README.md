@@ -141,8 +141,7 @@ File associated - `pylauncher.py` and `blueprint_node.py`
 
 ---
 
-/node1/inst_num
-/node2/inst_num
+
 
 ## Article
 
