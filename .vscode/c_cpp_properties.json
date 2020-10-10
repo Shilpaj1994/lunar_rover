@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/shilpaj/ROS_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/shilpaj/ROS_ws/src/Turtlesim-Sketch/TurtleSim-Sketch/dynamic_reconfigure-noetic-devel/include/**",
+        "/home/shilpaj/ROS_ws/src/Turtlesim-Sketch/TurtleSim-Sketch/image_thresholding/include/**",
+        "/home/shilpaj/ROS_ws/src/pylauncher/include/**",
+        "/home/shilpaj/ROS_ws/src/sim/include/**",
+        "/home/shilpaj/ROS_ws/src/Turtlesim-Sketch/TurtleSim-Sketch/sketch/include/**",
+        "/home/shilpaj/ROS_ws/src/TurtleSim-tf/include/**",
+        "/home/shilpaj/ROS_ws/src/vision/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}

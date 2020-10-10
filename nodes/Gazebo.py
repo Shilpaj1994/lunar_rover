@@ -10,33 +10,36 @@ import time
 from turtlesim.srv import *
 from std_srvs.srv import Empty
 from gazebo_msgs.msg import *
+from gazebo_msgs.srv import *
+from geometry_msgs.msg import *
 
 
 class Gazebo:
     def __init__(self):
         rospy.init_node("GazeboControl")
 
-        assert sim_time is True, "Set /use_sim_time to True"
-        print("ROS Time been used")
+        self.max_update_rate = 100
 
-        rospy.Subscriber('/lunar_world/set_link_state', gazebo_msgs/LinkState, self.callback_link_states)
-        rospy.Subscriber('/lunar_world/set_model_state', gazebo_msgs/ModelState, self.callback_model_states)
+        # rospy.Subscriber('/lunar_world/set_link_state', gazebo_msgs/LinkState, self.callback_link_states)
+        # rospy.Subscriber('/lunar_world/set_model_state', gazebo_msgs/ModelState, self.callback_model_states)
 
         while not rospy.is_shutdown():
             self.pause()
             time.sleep(5)
             self.unpause()
             time.sleep(5)
+            self.set_moon_physics()
+            time.sleep(10)
             self.reset_world()
             time.sleep(5)
             self.reset()
         exit()
 
-    def callback_link_states(self):
-        pass
+    # def callback_link_states(self):
+    #     pass
 
-    def callback_model_states(self):
-        pass
+    # def callback_model_states(self):
+    #     pass
 
     def use_sim_time(self):
         rospy.set_param('/use_sim_time', True)
@@ -45,6 +48,7 @@ class Gazebo:
         """
             Function to Reset the Simulator
         """
+        rospy.loginfo("Pausinig Simulation")
         try:
             reset_serv = rospy.ServiceProxy('/lunar_world/pause_physics', Empty)
             reset_serv()
@@ -55,6 +59,7 @@ class Gazebo:
         """
             Function to Reset the Simulator
         """
+        rospy.loginfo("Resuming Simulation")
         try:
             reset_serv = rospy.ServiceProxy('/lunar_world/unpause_physics', Empty)
             reset_serv()
@@ -65,6 +70,7 @@ class Gazebo:
         """
             Function to Reset the Simulator
         """
+        rospy.loginfo("Resetting Simulation")
         try:
             reset_serv = rospy.ServiceProxy('/lunar_world/reset_simulation', Empty)
             reset_serv()
@@ -75,77 +81,84 @@ class Gazebo:
         """
             Function to Reset the Simulator
         """
+        rospy.loginfo("Resetting the world")
         try:
             reset_serv = rospy.ServiceProxy('/lunar_world/reset_world', Empty)
             reset_serv()
         except rospy.ServiceException as e:
             rospy.loginfo("Service execution failed: %s" + str(e))
 
+    def set_moon_physics(self):
+        """
+        Set Physics to Moon
+        """
+        rospy.loginfo("Changing Gravity")
+        serve = SetPhysicsProperties()
+        ode_data = ODEPhysics()
+        gravity = Vector3()
 
-# class Model:
-#     def __init__(self):
-#         self._name =
-#
-#     def __repr__(self):
-#         print("Turtle {}".format(self.name))
-#
-#     def spawn(self, x, y, theta):
-#         """
-#         Function to spawn turtles in the Turtle-sim
-#         :param x: x-position with respect to origin at bottom-left
-#         :type x: float
-#         :param y: y-position with respect to origin at bottom-left
-#         :type y: float
-#         :param theta: orientation with respect to x-axis
-#         :type theta: float between [0 to 3] OR [0 to -3]
-#         """
-#         try:
-#             serv = rospy.ServiceProxy('/spawn', Spawn)
-#             serv(x, y, theta, self.name)
-#         except rospy.ServiceException as e:
-#             rospy.loginfo("Service execution failed: %s" + str(e))
-#
-#     def set_pen(self, flag=True):
-#         """
-#         Function to sketch the turtle movements
-#         :param flag: To turn sketching pen - ON[True]/OFF[False]
-#         :type flag: bool
-#         """
-#         try:
-#             if not flag:
-#                 set_serv = rospy.ServiceProxy('/' + self.name + '/set_pen', SetPen)
-#                 set_serv(0, 0, 0, 0, 1)
-#             elif flag:
-#                 set_serv = rospy.ServiceProxy('/' + self.name + '/set_pen', SetPen)
-#                 set_serv(255, 255, 255, 2, 0)
-#         except rospy.ServiceException as e:
-#             rospy.loginfo("Service execution failed: %s" + str(e))
-#
-#     def teleport(self, x, y, theta):
-#         """
-#         Function to teleport the turtle
-#         :param x: x-position with respect to origin at bottom-left
-#         :type x: float
-#         :param y: y-position with respect to origin at bottom-left
-#         :type y: float
-#         :param theta: orientation with respect to x-axis
-#         :type theta: float between [0 to 3] OR [0 to -3]
-#         """
-#         try:
-#             serv = rospy.ServiceProxy('/' + self.name + '/teleport_absolute', TeleportAbsolute)
-#             serv(x, y, theta)
-#         except rospy.ServiceException as e:
-#             rospy.loginfo("Service execution failed: %s" + str(e))
-#
-#     def kill_turtle(self):
-#         """
-#         Function to remove the turtle from Turtle-sim
-#         """
-#         try:
-#             serv = rospy.ServiceProxy('/kill', Kill)
-#             serv(self.name)
-#         except rospy.ServiceException as e:
-#             rospy.loginfo("Service execution failed: %s" + str(e))
+        gravity.x = 0.0
+        gravity.y = 0.0
+        gravity.z = -1.6
+
+        ode_data.auto_disable_bodies = False
+        ode_data.sor_pgs_precon_iters = 0
+        ode_data.sor_pgs_iters = 0
+        ode_data.sor_pgs_w = 0.0
+        ode_data.sor_pgs_rms_error_tol = 0.0
+        ode_data.contact_surface_layer = 0.0
+        ode_data.contact_max_correcting_vel = 0.0
+        ode_data.cfm = 0.0
+        ode_data.erp = 0.0
+        ode_data.max_contacts = 0
+
+        serve.time_step = 1.0
+        serve.max_update_rate = self.max_update_rate
+        serve.gravity = gravity
+        serve.ode_config = ode_data
+
+        try:
+            reset_serv = rospy.ServiceProxy('/lunar_world/set_physics_properties', SetPhysicsProperties)
+            reset_serv(serve.time_step, serve.max_update_rate, serve.gravity, serve.ode_config)
+            rospy.loginfo("Moon's gravitational field activated.")
+        except rospy.ServiceException as e:
+            rospy.loginfo("Service execution failed: %s" + str(e))
+
+    def set_earth_physics(self):
+        """
+        Set Physics to Earth
+        """
+        rospy.loginfo("Changing Gravity")
+        serve = SetPhysicsProperties()
+        ode_data = ODEPhysics()
+        gravity = Vector3()
+
+        gravity.x = 0.0
+        gravity.y = 0.0
+        gravity.z = -9.8
+
+        ode_data.auto_disable_bodies = False
+        ode_data.sor_pgs_precon_iters = 0
+        ode_data.sor_pgs_iters = 0
+        ode_data.sor_pgs_w = 0.0
+        ode_data.sor_pgs_rms_error_tol = 0.0
+        ode_data.contact_surface_layer = 0.0
+        ode_data.contact_max_correcting_vel = 0.0
+        ode_data.cfm = 0.0
+        ode_data.erp = 0.0
+        ode_data.max_contacts = 0
+
+        serve.time_step = 1.0
+        serve.max_update_rate = self.max_update_rate
+        serve.gravity = gravity
+        serve.ode_config = ode_data
+
+        try:
+            reset_serv = rospy.ServiceProxy('/lunar_world/set_physics_properties', SetPhysicsProperties)
+            reset_serv(serve.time_step, serve.max_update_rate, serve.gravity, serve.ode_config)
+            rospy.loginfo("Earth's gravitational field activated.")
+        except rospy.ServiceException as e:
+            rospy.loginfo("Service execution failed: %s" + str(e))
 
 
 if __name__ == '__main__':
