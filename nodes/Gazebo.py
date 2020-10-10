@@ -20,9 +20,6 @@ class Gazebo:
 
         self.max_update_rate = 100
 
-        # rospy.Subscriber('/lunar_world/set_link_state', gazebo_msgs/LinkState, self.callback_link_states)
-        # rospy.Subscriber('/lunar_world/set_model_state', gazebo_msgs/ModelState, self.callback_model_states)
-
         while not rospy.is_shutdown():
             self.pause()
             time.sleep(5)
@@ -35,13 +32,11 @@ class Gazebo:
             self.reset()
         exit()
 
-    # def callback_link_states(self):
-    #     pass
-
-    # def callback_model_states(self):
-    #     pass
 
     def use_sim_time(self):
+        """
+        Method to activate simulation time
+        """
         rospy.set_param('/use_sim_time', True)
 
     def pause(self):
