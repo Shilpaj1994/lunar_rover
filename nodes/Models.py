@@ -79,7 +79,9 @@ class Models:
 
 if __name__ == '__main__':
     try:
-        filename = '/home/shilpaj/ROS_ws/src/sim/model/husky/model.sdf'
+        with open("/home/shilpaj/ROS_ws/src/sim/model/husky/model.sdf", "r") as f:
+            filename = f.read()
+            print("Model loaded", type(filename))
         name = 'husk'
         position = [0, 0, 0]
         orientation = [0, 0, 0]
