@@ -161,7 +161,14 @@ if __name__=="__main__":
         twist = Twist()
         twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
         twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
-        pub.publish(twist)
+
+        move = ModelState()
+        move.model_name = 'husk'
+        move.pose = pose_data
+        move.twist = twist
+        move.reference_frame = 'base_link'
+        
+        pub.publish(move)
 
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
 
