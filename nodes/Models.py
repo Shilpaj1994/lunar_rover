@@ -79,11 +79,14 @@ class Models:
 
 if __name__ == '__main__':
     try:
-        with open("/home/shilpaj/ROS_ws/src/sim/model/husky/model.sdf", "r") as f:
+        husky_address = "/home/shilpaj/ROS_ws/src/sim/model/husky/model.sdf"
+        husky_lidar_address = "/home/shilpaj/ROS_ws/src/sim/model/husky_lidar/model.sdf"
+
+        with open(husky_lidar_address, "r") as f:
             filename = f.read()
             print("Model loaded", type(filename))
         name = 'husk'
-        position = [0, 0, 0]
+        position = [10, 10, 0]
         orientation = [0, 0, 0]
         ref_frame = 'world'
 
