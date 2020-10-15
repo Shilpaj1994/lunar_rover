@@ -1,3 +1,0 @@
-/home/shilpaj/ROS_ws/src/sim/gazebo_ros_bridge/build/CMakeFiles/edit_cache.dir
-/home/shilpaj/ROS_ws/src/sim/gazebo_ros_bridge/build/CMakeFiles/rebuild_cache.dir
-/home/shilpaj/ROS_ws/src/sim/gazebo_ros_bridge/build/CMakeFiles/listener.dir
