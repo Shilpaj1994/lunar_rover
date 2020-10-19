@@ -124,22 +124,15 @@ File associated - `pylauncher.py` and `blueprint_node.py`
 
 - In a new terminal, run the command - `$ rqt_tf_tree` to display the `tf-tree`
 
-  ![](./docs/tf.png)
-
-
-
-![](./docs/Overview.png)
-
-
 
 
 ---
 
 
 
-## Future Work
+![](./docs/Overview.png)
 
-- Import argument value as a ROS parameter from a launch file to a node in order to control assets associated with the node like topic name, transfer data, etc
+
 
 
 
