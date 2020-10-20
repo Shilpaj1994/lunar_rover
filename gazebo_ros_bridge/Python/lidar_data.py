@@ -7,7 +7,6 @@ Date: Oct 16, 2020
 
 import sys
 from trollius import From
-import pygazebo
 import pygazebo.msg.laserscan_stamped_pb2 as scan
 
 
