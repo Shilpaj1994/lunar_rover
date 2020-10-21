@@ -1,0 +1,12 @@
+*.pyc
+*~
+#*
+.#*
+*#
+*.egg-info
+*.egg
+.tox
+.coverage
+_build
+dist
+*.bak
