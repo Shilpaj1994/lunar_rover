@@ -132,6 +132,11 @@ File associated - `pylauncher.py` and `blueprint_node.py`
 
 - This is an architecture for Gazebo
 - There are two main nodes - server and a client
+- Server handles all the physics, sensors and calculation part
+- Client's job is to render all this data in the simulator
+- Gazebo's server and client keeps communicating continuously
+- After reading the data from this communication channel, we can read sensor data, simulation data and the physics data
+- This data once augmented with ROS arguments can be sent over ROS topics to be accessed by the ROS nodes
 
 ![](./docs/Overview.png)
 
