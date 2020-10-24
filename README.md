@@ -130,6 +130,9 @@ File associated - `pylauncher.py` and `blueprint_node.py`
 
 
 
+- This is an architecture for Gazebo
+- There are two main nodes - server and a client
+
 ![](./docs/Overview.png)
 
 
